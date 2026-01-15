@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jorden's App Portfolio - Pokémon Editie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* De klassieke Gameboy Kleuren */
+            --gb-body: #c0c0c0; /* Grijs plastic */
+            --gb-screen-bg: #8bac0f; /* Het groenige scherm */
+            --gb-screen-dark: #0f380f; /* De donkere pixels */
+            --gb-screen-light: #9bbc0f;
+            --gb-shadow: #7e7e7e;
+            --gb-details: #5c5c5c;
+        }
+
+        body {
+            background-color: #202020;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* --- De Gameboy Behuizing --- */
+        .gameboy {
+            background-color: var(--gb-body);
+            width: 350px;
+            height: 620px;
+            border-radius: 20px 20px 50px 20px;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.5);
+            position: relative;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- Het Scherm Gedeelte --- */
+        .screen-border {
+            background-color: var(--gb-details);
+            width: 280px;
+            height: 320px; /* Iets hoger gemaakt voor de lijst */
+            border-radius: 15px 15px 40px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 30px 10px 30px;
+            box-sizing: border-box;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .power-light {
+            position: absolute;
+            top: 100px;
+            left: 10px;
+            width: 10px;
+            height: 10px;
+            background-color: #ff0000;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #ff0000;
+            content: "BATTERY";
+            font-size: 6px;
+            color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 15px;
+        }
+
+        .screen {
+            background-color: var(--gb-screen-bg);
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 3px 3px 5px rgba(0,0,0,0.2);
+            overflow-y: auto; /* Zorgt dat je kunt scrollen als de lijst te lang is */
+            padding: 10px;
+            box-sizing: border-box;
+            color: var(--gb-screen-dark);
+            scrollbar-width: thin;
+            scrollbar-color: var(--gb-screen-dark) var(--gb-screen-bg);
+        }
+
+        /* Scrollbar styling voor webkit browsers */
+        .screen::-webkit-scrollbar {
+            width: 8px;
+        }
+        .screen::-webkit-scrollbar-thumb {
+            background-color: var(--gb-screen-dark); 
+        }
+
+        /* --- De Menu Lijst --- */
+        h1 {
+            font-size: 14px;
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--gb-screen-dark);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--gb-screen-dark);
+            display: block;
+            position: relative;
+            padding-left: 15px;
+            transition: all 0.1s;
+        }
+
+        /* Het pijltje dat verschijnt bij hover (zoals in Pokémon menu) */
+        a:hover::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            animation: blink 1s infinite;
+        }
+
+        a:hover {
+            font-weight: bold;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* --- Knoppen (Decoratief) --- */
+        .controls {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .d-pad {
+            width: 90px;
+            height: 90px;
+            position: relative;
+        }
+        
+        .d-pad div {
+            background-color: #333;
+            position: absolute;
+            border-radius: 3px;
+        }
+        
+        .d-pad .h { width: 100%; height: 30px; top: 30px; }
+        .d-pad .v { height: 100%; width: 30px; left: 30px; }
+        .d-pad .middle { width: 30px; height: 30px; top: 30px; left: 30px; background-color: #2a2a2a; z-index: 2;}
+
+        .ab-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+
+        .btn {
+            width: 40px;
+            height: 40px;
+            background-color: #A93646; /* De rode A/B knoppen */
+            border-radius: 50%;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 5px;
+            color: #5c2029;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .start-select {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .ss-btn {
+            width: 60px;
+            height: 12px;
+            background-color: #999;
+            border-radius: 10px;
+            transform: rotate(-25deg);
+            border: 1px solid #777;
+        }
+
+        .footer-text {
+            margin-top: 10px;
+            color: #888;
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-style: italic;
+            font-family: sans-serif; /* Nintendo logo font is anders */
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="gameboy">
+        <div class="screen-border">
+            <div class="power-light"></div>
+            <div class="screen">
+                <h1>JORDEN'S APPS</h1>
+                <ul>
+                    <li><a href="https://jordenric96.github.io/Sport-Dashboard/dashboard.html" target="_blank">SPORT DASHBOARD</a></li>
+                    <li><a href="https://jordenric96.github.io/deslimstevanloemek/index2.0.html" target="_blank">DE SLIMSTE V/ LOEMEK</a></li>
+                    <li><a href="https://jordenric96.github.io/boterkaaseneieren/index.html" target="_blank">BOTER, KAAS & EIEREN</a></li>
+                    <li><a href="https://jordenric96.github.io/padel/padel.html" target="_blank">PADEL SCOREBORD</a></li>
+                    <li><a href="https://jordenric96.github.io/eetplanner/eetplanner.html" target="_blank">EETPLANNER</a></li>
+                    <li><a href="https://jordenric96.github.io/MijnKookApp/index.html" target="_blank">MIJN KOOK APP</a></li>
+                    <li><a href="https://jordenric96.github.io/Voetbal/index.html" target="_blank">VOETBAL STATS</a></li>
+                    <li><a href="https://jordenric96.github.io/fruit/" target="_blank">FRUIT MACHINE</a></li>
+                    <li><a href="https://jordenric96.github.io/darts/?fbclid=IwY2xjawPWC-FleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAwzNTA2ODU1MzE3MjgAAR6XcG0tAh09I4tUczxMQGPPx8WDWjbeMzeb6nbJAPSldHdarKOCvt4hNmcqCw_aem_J7qg21R4Jt-vfGDws5pbLw" target="_blank">DARTS SCOREBORD</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-text">Nintendo GAME BOY™</div>
+
+        <div class="controls">
+            <div class="d-pad">
+                <div class="v"></div>
+                <div class="h"></div>
+                <div class="middle"></div>
+            </div>
+            <div class="ab-buttons">
+                <div class="btn">B</div>
+                <div class="btn">A</div>
+            </div>
+        </div>
+
+        <div class="start-select">
+            <div class="ss-btn"></div>
+            <div class="ss-btn"></div>
+        </div>
+    </div>
+
+</body>
+</html>
